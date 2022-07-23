@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send
-import time
+from datetime import timedelta, datetime
 import os
 
 app = Flask(__name__)
@@ -16,8 +16,12 @@ def index():
 
 @socketio.on('message')
 def message(data):
-    timestamp = time.strftime('%I:%M %p', time.localtime())
-    send([timestamp] + data)
+    time = datetime.now()+timedelta(hours=5,minutes=30)
+    h = '0'+str(time.hour) if time.hour <= 9 else str(time.hour) 
+    m = '0'+str(time.minute) if time.minute <= 9 else str(time.minute) 
+    s = '0'+str(time.second) if time.second <= 9 else str(time.second) 
+    timestamp = f'{h}:{m}:{s}'
+    send([timestamp] + data, broadcast=True)
 
 
 if __name__ == '__main__':
