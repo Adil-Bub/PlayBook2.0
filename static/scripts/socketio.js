@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io();
+    const socket = io.connect('https://' + document.domain + ':' + location.port);
 
     socket.on('message', (DATA) => {
         const card = document.createElement('div')
